@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34408.163
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FDA.Backend", "FDA.Backend\FDA.Backend.csproj", "{F9B599AA-A754-421C-B547-FAB6EB59D14A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FDA.Database", "FDA.Database\FDA.Database.csproj", "{EA7A5067-74DA-436E-9E4D-1D8B6EC9B1CF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F9B599AA-A754-421C-B547-FAB6EB59D14A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9B599AA-A754-421C-B547-FAB6EB59D14A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9B599AA-A754-421C-B547-FAB6EB59D14A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9B599AA-A754-421C-B547-FAB6EB59D14A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA7A5067-74DA-436E-9E4D-1D8B6EC9B1CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA7A5067-74DA-436E-9E4D-1D8B6EC9B1CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA7A5067-74DA-436E-9E4D-1D8B6EC9B1CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA7A5067-74DA-436E-9E4D-1D8B6EC9B1CF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9F5A7084-1D16-4DA9-849C-94D66A630EE8}
+	EndGlobalSection
+EndGlobal
