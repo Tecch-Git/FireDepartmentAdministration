@@ -13,7 +13,7 @@ namespace CSVTools;
 /// </summary>
 public class MatchMemberPhoneNumber
 {
-    public static void Run(string membersPath, string numbersPath, string outputPath)
+    public static void RunWithCSV(string membersPath, string numbersPath, string outputPath)
     {
         var personsCsvRaw = File.ReadAllLines(membersPath, Encoding.UTF8)
             .Select(CleanName)
@@ -24,13 +24,22 @@ public class MatchMemberPhoneNumber
             .Select(line =>
             {
                 var parts = line.Split(',');
-                return parts.Length >= 2
-                    ? (Name: CleanName(parts[0]), Phone: parts[1].Trim())
-                    : (Name: "", Phone: "");
+                if (parts.Length < 2) return null;
+
+                var name = CleanName(parts[0]);
+                var phone = parts[1].Trim();
+                var nameVariants = GetAllNameVariants(name).ToList();
+
+                return new { Name = name, Phone = phone, Variants = nameVariants };
             })
-            .Where(x => !string.IsNullOrWhiteSpace(x.Name))
+            .Where(x => x != null && !string.IsNullOrWhiteSpace(x.Name))
             .Distinct()
             .ToList();
+
+        if (numberEntries == null) {
+            Console.WriteLine("Fehler");
+            return;
+        }
 
         var nameToPhone = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         var unmatchedPersons = new List<string>();
@@ -41,22 +50,17 @@ public class MatchMemberPhoneNumber
         int numErrCnt = numberEntries.Count(e => string.IsNullOrEmpty(e.Phone));
         foreach (var personName in personsCsvRaw)
         {
-            var matchedEntrie = numberEntries.FirstOrDefault(entry =>
-                entry.Name.Equals(SwapNameParts(personName, true), StringComparison.OrdinalIgnoreCase) ||
-                entry.Name.Equals(SwapNameParts(personName, false), StringComparison.OrdinalIgnoreCase) ||
-                entry.Name.Equals(SwapNameParts(personName, false, true), StringComparison.OrdinalIgnoreCase) ||
-                entry.Name.Equals(SwapNameParts(personName, true, true), StringComparison.OrdinalIgnoreCase));
+            var variants = GetAllNameVariants(personName);
 
-            if (!string.IsNullOrEmpty(matchedEntrie.Name))
+            var matchedEntry = numberEntries.FirstOrDefault(entry =>
+                entry!.Variants.Any(v => variants.Contains(v)));
+
+            if (matchedEntry != null)
             {
-                nameToPhone[personName] = matchedEntrie.Phone;
+                nameToPhone[personName] = matchedEntry.Phone;
             }
             else
             {
-                if (personName == "Seiwald Lisa")
-                {
-                    Console.WriteLine("test");
-                }
                 unmatchedPersons.Add(personName);
                 matchErrCnt++;
             }
@@ -113,4 +117,19 @@ public class MatchMemberPhoneNumber
         else
             return string.Join(" ", parts[..^1].Prepend(parts[^1]));
     }
+
+    static IEnumerable<string> GetAllNameVariants(string fullName)
+    {
+        var variants = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            fullName,
+            SwapNameParts(fullName, startsWithSurname: true, removeSecondFirstName: false),
+            SwapNameParts(fullName, startsWithSurname: false, removeSecondFirstName: false),
+            SwapNameParts(fullName, startsWithSurname: true, removeSecondFirstName: true),
+            SwapNameParts(fullName, startsWithSurname: false, removeSecondFirstName: true)
+        };
+
+        return variants;
+    }
+
 }

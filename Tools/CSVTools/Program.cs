@@ -4,4 +4,4 @@ string pathHelperList = "C:\\git\\FireDepartmentAdministration\\Data\\AllHelper2
 string pathHelperNumbers = "C:\\git\\FireDepartmentAdministration\\Data\\AllMembersPhoneNumbers.csv";
 string pathOutput = "C:\\git\\FireDepartmentAdministration\\Data\\MatchedMembersPhoneNumbers.csv";
 
-MatchMemberPhoneNumber.Run(pathHelperList, pathHelperNumbers, pathOutput);
+MatchMemberPhoneNumber.RunWithCSV(pathHelperList, pathHelperNumbers, pathOutput);
