@@ -41,6 +41,12 @@ builder.Services.AddApiVersioning(options =>
     options.ReportApiVersions = true;
 }).AddApiExplorer(options => options.GroupNameFormat = "'v'VV");
 
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(5258);
+});
+
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())

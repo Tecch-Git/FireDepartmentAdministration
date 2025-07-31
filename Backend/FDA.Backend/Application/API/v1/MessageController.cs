@@ -5,36 +5,53 @@ using FDA.Backend.Functions;
 using FDA.Database.Model;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
+using System.IO;
+using System.Text;
 
 namespace FDA.Backend.Application.API.v1
 {
     [ApiController, Route("api/v{version:apiVersion}/[controller]")]
-    public class MessageController(IMemberService memberService) : ControllerBase
+    public class MessageController() : ControllerBase
     {
-        private IMemberService memberService = memberService;
-        private CSVProcessing csvFunctions = new CSVProcessing();
+        [HttpGet("GetNextNumber")]
+        [ProducesResponseType(typeof(MessageResponse), 200)]
+        public async Task<IActionResult>? GetNextNumber()
+        {
+            //var messages = CSVProcessing.LoadMessagesFromCSV();
 
-        [HttpGet("LoadNextMessage")]
+            //string[] result = [messages.FirstOrDefault().Message, messages.FirstOrDefault().TargetNumber];
+
+            return Ok("06645067851");
+        }
+
+        [HttpGet("GetMessageByNumber")]
+        public async Task<IActionResult>? GetMessageByNumber()
+        {
+            //var messages = CSVProcessing.LoadMessagesFromCSV();
+
+            //string[] result = [messages.FirstOrDefault().Message, messages.FirstOrDefault().TargetNumber];
+            Console.WriteLine();
+            return Ok("Hallo, das ist eine Testnachricht.");
+        }
+
+        [HttpGet("GetNextMessage")]
         [ProducesResponseType(typeof(MessageResponse), 200)]
         public async Task<IActionResult>? GetNextMessage()
         {
-            var messages = csvFunctions.LoadMessagesFromCSV();
+            var messages = CSVProcessing.LoadMessagesFromCSV();
+
+            string[] result = [messages.FirstOrDefault().Message, messages.FirstOrDefault().TargetNumber];
+
+            return Ok(result);
+        }
+
+        [HttpGet("GetMessagesFromCSV")]
+        [ProducesResponseType(typeof(MessageResponse), 200)]
+        public async Task<IActionResult>? GetMessagesFromCSV()
+        {
+            var messages = CSVProcessing.LoadMessagesFromCSV();
 
             return Ok(messages.FirstOrDefault());
-        }
-
-        [HttpGet("LoadAllMembers")]
-        [ProducesResponseType(typeof(List<Member>), 200)]
-        public async Task<IActionResult> GetAllMembers()
-        {
-            return Ok(await memberService.GetAllMembers());
-        }
-
-        [HttpPost("AddMember")]
-        [ProducesResponseType(typeof(bool), 200)]
-        public async Task<IActionResult> AddMember(AddMemberRequest request)
-        {
-            return Ok(await memberService.AddMember(request.name, request.phone, request.email));
         }
     }
 }

@@ -30,9 +30,16 @@ public class Member
     public MEMBERSHIP Membership { get; set; } = 0;
 }
 
+/// <summary>
+/// 0 = None
+/// 1 = Active
+/// 2 = Reserve
+/// 3 = Youth
+/// </summary>
 public enum MEMBERSHIP
 {
     None = 0,
     Active = 1,
-    Youth = 2
+    Reserve = 2,
+    Youth = 3
 }
